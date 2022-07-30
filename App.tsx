@@ -1,21 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Home } from './src/pages/Home';
+import { ThemeProvider } from 'styled-components'
+import { ActivityIndicator } from 'react-native'
+import {
+  useFonts,
+  Inter_400Regular,
+  Inter_500Medium
+} from '@expo-google-fonts/inter'
+import {
+  Archivo_400Regular,
+  Archivo_500Medium,
+  Archivo_600SemiBold
+} from '@expo-google-fonts/archivo'
+import theme from './src/styles/theme';
+import { CardDetails } from './src/pages/CardDetails';
+import { Scheduling } from './src/pages/Scheduling';
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Archivo_400Regular,
+    Archivo_500Medium,
+    Archivo_600SemiBold
+  })
+  if (!fontsLoaded) {
+    return <ActivityIndicator color={'#FFF'} />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider theme={theme}>
+      {/* <CardDetails /> */}
+      <Scheduling/>
+    </ThemeProvider>
+
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
