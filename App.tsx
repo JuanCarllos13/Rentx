@@ -1,5 +1,4 @@
 import React from 'react';
-import { Home } from './src/pages/Home';
 import { ThemeProvider } from 'styled-components'
 import { ActivityIndicator } from 'react-native'
 import {
@@ -13,8 +12,7 @@ import {
   Archivo_600SemiBold
 } from '@expo-google-fonts/archivo'
 import theme from './src/styles/theme';
-import { CardDetails } from './src/pages/CardDetails';
-import { Scheduling } from './src/pages/Scheduling';
+import { Routes } from './src/routes'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -30,8 +28,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {/* <CardDetails /> */}
-      <Scheduling/>
+      <Routes />
     </ThemeProvider>
 
   );

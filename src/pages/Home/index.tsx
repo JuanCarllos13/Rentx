@@ -10,9 +10,11 @@ import { StatusBar } from 'react-native';
 import Logo from '../../assets/logo.svg'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { Cart } from '../../components/Car'
-
+import { useNavigation } from "@react-navigation/native";
 
 export function Home() {
+  const navigation = useNavigation()
+
   const cardData = {
     brand: 'audi',
     name: 'RS 5 Coupe',
@@ -23,7 +25,9 @@ export function Home() {
     thumbnail: 'https://www.pngmart.com/files/1/Audi-RS5-Red-PNG.png'
   }
 
-
+  function handleCarDetails(){
+    navigation.navigate('CardDetails')
+  }
 
   return (
     <Container>
@@ -46,13 +50,13 @@ export function Home() {
 
 
       </Header>
-    <CardList
-    data={[1, 2, 3]}
-    keyExtractor={item => String(item)}
-    renderItem={({item}) => <Cart data={cardData} />}
-    />
+      <CardList
+        data={[1, 2, 3]}
+        keyExtractor={item => String(item)}
+        renderItem={({ item }) => <Cart data={cardData} onPress={handleCarDetails} />}
+      />
 
- 
+
     </Container>
   )
 }

@@ -1,4 +1,6 @@
 import React from "react";
+import {useTheme} from 'styled-components'
+
 import { 
   Container,
   Title
@@ -11,8 +13,10 @@ interface Props {
 }
 
 export function Button({onPress, title, color, ...rest}: Props){
+  const theme = useTheme()
+
   return(
-    <Container {...rest} color={color}>
+    <Container {...rest} color={color ? color: theme.colors.main} onPress={onPress}>
       <Title>{title}</Title>
     </Container>
   )
