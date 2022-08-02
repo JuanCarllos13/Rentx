@@ -12,24 +12,17 @@ import {
   CardImage,
 } from "./styles";
 
-import GasolineSvg from '../../assets/gasoline.svg'
 import { TouchableOpacityProps } from "react-native";
-
-interface Props {
-  brand: string;
-  name: string;
-  rent: {
-    period: string;
-    price: number
-  }
-  thumbnail: string
-}
+import { CarDTO } from '../../dtos/CarDTO'
+import { getAccessoryIcon } from "../../utils/getAccessoryIcon";
 
 interface Data extends TouchableOpacityProps {
-  data: Props
+  data: CarDTO
 }
 
-export function Cart({ data, ...rest}: Data) {
+export function Cart({ data, ...rest }: Data) {
+  const MotorIcon = getAccessoryIcon(data.fuel_type)
+
   return (
     <Container {...rest}>
       <Details>
@@ -43,7 +36,7 @@ export function Cart({ data, ...rest}: Data) {
           </Rent>
 
           <Type>
-            <GasolineSvg />
+            <MotorIcon />
           </Type>
         </About>
       </Details>
