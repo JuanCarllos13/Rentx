@@ -58,22 +58,26 @@ export function SchudelingDetails() {
   const rentTotal = Number(dates.length * car.rent.price)
 
   async function handleConfirmRental() {
-    console.log(car.id)
     const schedules  = await api.get(`/schedules_bycars/${car.id}`)
 
     const unavailable_dates = [
       ...schedules.data.unavailable_dates,
       ...dates,
     ]
+
+    await api.post('schedules_byuser', {
+      user_id: 1,
+      car,
+      startDate: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
+      endDate: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy')
+    })
     
     api.put(`/schedules_bycars/${car.id}`, {
       id: car.id,
       unavailable_dates
     }).then(response => {
-      console.log('entrou')
       navigation.navigate('SchedulingComplete')
     }).catch((err) => {
-      console.log('n]ao entrou')
       Alert.alert('Não foi possível fazer o agendamento')
     })
   }

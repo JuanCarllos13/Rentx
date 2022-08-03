@@ -6,6 +6,7 @@ export declare global {
       Scheduling:  {car: {}};
       SchedulingComplete: undefined;
       SchudelingDetails:  {};
+      MyCars: undefined;
     }
   }
 }
