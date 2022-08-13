@@ -13,8 +13,14 @@ import {
 } from '@expo-google-fonts/archivo'
 import theme from './src/styles/theme';
 import { Routes } from './src/routes'
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { LogBox } from 'react-native'
 
+LogBox.ignoreLogs([
+    'ViewPropTypes will be removed from React Native. Migrate to ViewPropTypes exported from \'deprecated-react-native-prop-types\'.'
+])
 export default function App() {
+
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
@@ -26,9 +32,13 @@ export default function App() {
     return <ActivityIndicator color={'#FFF'} />;
   }
 
+
   return (
     <ThemeProvider theme={theme}>
-      <Routes />
+      <GestureHandlerRootView style={{flex: 1}}>
+        <Routes />
+      </GestureHandlerRootView>
+
     </ThemeProvider>
 
   );

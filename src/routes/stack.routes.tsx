@@ -6,13 +6,21 @@ import { Scheduling } from "../pages/Scheduling";
 import { SchedulingComplete } from "../pages/SchedulingComplete";
 import { SchudelingDetails } from "../pages/SchudelingDetails";
 import { MyCars } from "../pages/MyCars";
+import { Splash } from "../pages/Splash";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
 export function StackRoutes() {
   return (
-    <Navigator screenOptions={{ headerShown: false }}>
-      <Screen name="Home" component={Home} />
+    <Navigator screenOptions={{ headerShown: false }} initialRouteName='Splash'>
+      <Screen name="Splash" component={Splash} />
+
+      <Screen name="Home" 
+      component={Home}
+      options={{
+        gestureEnabled: false
+      }}
+       />
 
       <Screen name="CardDetails" component={CardDetails} />
 

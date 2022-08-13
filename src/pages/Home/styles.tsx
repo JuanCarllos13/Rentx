@@ -2,6 +2,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 import { FlatList, FlatListProps, TouchableOpacity } from 'react-native'
 import { CarDTO } from '../../dtos/CarDTO'
+import {RectButton} from 'react-native-gesture-handler'
 
 export const Container = styled.View`
     flex: 1;
@@ -39,7 +40,7 @@ export const CardList = styled(FlatList as new (props: FlatListProps<CarDTO>) =>
 })`
 `
 
-export const MyCarsButton = styled(TouchableOpacity)`
+export const MyCarsButton = styled(RectButton)`
     width: 60px;
     height: 60px;
     background-color: ${({ theme }) => theme.colors.main};

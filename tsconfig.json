@@ -2,7 +2,8 @@
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,
-    "jsx": "react"
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true
   },
   "extends": "expo/tsconfig.base"
 }

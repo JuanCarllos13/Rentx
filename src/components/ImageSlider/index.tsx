@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import { FlatList, ViewToken } from "react-native";
 
 import {
   Container,
@@ -12,26 +13,46 @@ interface Props {
   imagesUrl: string[]
 }
 
+interface ChangeImageProps {
+  viewableItems: ViewToken[];
+  changed: ViewToken[];
+}
 
-export function ImagemSlider({imagesUrl}: Props) {
+export function ImagemSlider({ imagesUrl }: Props) {
+  const [imagemIndex, setImagemIndex] = useState(0)
+
+  const indexChanged = useRef((info: ChangeImageProps) => {
+    const index = info.viewableItems[0].index!;
+    setImagemIndex(index)
+  })
+
   return (
     <Container>
       <ImageIndexs>
-        <ImagemIndex active={true} />
-        <ImagemIndex active={false} />
-        <ImagemIndex active={false} />
-        <ImagemIndex active={false} />
+        {
+          imagesUrl.map((item, index) => (
+            <ImagemIndex
+              key={String(index)}
+              active={index === imagemIndex} />
+          ))
+        }
       </ImageIndexs>
 
-      <CardImagemWrapper>
-        <CardImagem
-        source={{uri: imagesUrl[0]}}
-        resizeMode='contain'
-        />
-      </CardImagemWrapper>
+      <FlatList
+        data={imagesUrl}
+        keyExtractor={key => key}
+        renderItem={({ item }) => (
+          <CardImagemWrapper>
+            <CardImagem
+              source={{ uri: item }}
+              resizeMode='contain'
+            />
+          </CardImagemWrapper>
+        )}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        onViewableItemsChanged={indexChanged.current}
+      />
     </Container>
-
-
-
   )
 }
