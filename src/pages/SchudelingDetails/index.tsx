@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Accessory } from "../../components/Accesory";
 import { BackButton } from "../../components/BackButton";
 import { ImagemSlider } from "../../components/ImageSlider";
-import { Feather } from '@expo/vector-icons'
-import { useTheme } from 'styled-components'
-import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
+import { Feather } from "@expo/vector-icons";
+import { useTheme } from "styled-components";
+import { getAccessoryIcon } from "../../utils/getAccessoryIcon";
 import {
   Container,
   Header,
@@ -36,63 +36,74 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { CarDTO } from "../../dtos/CarDTO";
 import { format } from "date-fns";
 import { getPlatformDate } from "../../utils/getPlataformaDate";
-import api from "../../services/api";
+import {api} from "../../services/api";
 import { Alert } from "react-native";
 
 interface Params {
-  car: CarDTO
-  dates: string[]
+  car: CarDTO;
+  dates: string[];
 }
 
 interface RentalPeriod {
-  start: string
-  end: string
+  start: string;
+  end: string;
 }
 
 export function SchudelingDetails() {
-  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod)
-  const theme = useTheme()
-  const navigation = useNavigation()
-  const route = useRoute()
-  const { car, dates } = route.params as Params
-  const rentTotal = Number(dates.length * car.rent.price)
+  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>(
+    {} as RentalPeriod
+  );
+  const theme = useTheme();
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { car, dates } = route.params as Params;
+  const rentTotal = Number(dates.length * car.price);
 
   async function handleConfirmRental() {
-    const schedules  = await api.get(`/schedules_bycars/${car.id}`)
+    const schedules = await api.get(`/schedules_bycars/${car.id}`);
 
-    const unavailable_dates = [
-      ...schedules.data.unavailable_dates,
-      ...dates,
-    ]
+    const unavailable_dates = [...schedules.data.unavailable_dates, ...dates];
 
-    await api.post('schedules_byuser', {
+    await api.post("schedules_byuser", {
       user_id: 1,
       car,
-      startDate: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
-      endDate: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy')
-    })
-    
-    api.put(`/schedules_bycars/${car.id}`, {
-      id: car.id,
-      unavailable_dates
-    }).then(response => {
-      navigation.navigate('SchedulingComplete')
-    }).catch((err) => {
-      Alert.alert('Não foi possível fazer o agendamento')
-    })
+      startDate: format(getPlatformDate(new Date(dates[0])), "dd/MM/yyyy"),
+      endDate: format(
+        getPlatformDate(new Date(dates[dates.length - 1])),
+        "dd/MM/yyyy"
+      ),
+    });
+
+    api
+      .put(`/schedules_bycars/${car.id}`, {
+        id: car.id,
+        unavailable_dates,
+      })
+      .then((response) => {
+        navigation.navigate("Confirmation", {
+          title: "Carro Alugado",
+          message: `Agora você só precisa ir${"\n"}até a concessionária da RENTX${"\n"}pegar o seu automóvel.`,
+          nextScreenRoute: "Home",
+        });
+      })
+      .catch((err) => {
+        Alert.alert("Não foi possível fazer o agendamento");
+      });
   }
 
   function handleBack() {
-    navigation.goBack()
+    navigation.goBack();
   }
 
   useEffect(() => {
     setRentalPeriod({
-      start: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
-      end: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
-    })
-  }, [])
-
+      start: format(getPlatformDate(new Date(dates[0])), "dd/MM/yyyy"),
+      end: format(
+        getPlatformDate(new Date(dates[dates.length - 1])),
+        "dd/MM/yyyy"
+      ),
+    });
+  }, []);
 
   return (
     <Container>
@@ -100,11 +111,8 @@ export function SchudelingDetails() {
         <BackButton onPress={handleBack} />
       </Header>
 
-
       <CarImagem>
-        <ImagemSlider
-          imagesUrl={car.photos}
-        />
+        <ImagemSlider imagesUrl={car.photos} />
       </CarImagem>
 
       <Content>
@@ -115,30 +123,25 @@ export function SchudelingDetails() {
           </Description>
 
           <Rent>
-            <Period>{car.rent.period}</Period>
-            <Price>R$ {car.rent.price}</Price>
+            <Period>{car.period}</Period>
+            <Price>R$ {car.price}</Price>
           </Rent>
         </Details>
 
         <Accessories>
-
-          {
-            car.accessories.map(accessory => (
-              <Accessory
-                key={accessory.type}
-                name={accessory.name}
-                icon={getAccessoryIcon(accessory.type)} />
-            ))
-
-          }
-
-
+          {car.accessories.map((accessory) => (
+            <Accessory
+              key={accessory.type}
+              name={accessory.name}
+              icon={getAccessoryIcon(accessory.type)}
+            />
+          ))}
         </Accessories>
 
         <RentalPeriod>
           <CalendarIcon>
             <Feather
-              name={'calendar'}
+              name={"calendar"}
               size={RFValue(24)}
               color={theme.colors.shape}
             />
@@ -150,13 +153,13 @@ export function SchudelingDetails() {
           </DateInfo>
 
           <Feather
-            name={'chevron-right'}
+            name={"chevron-right"}
             size={RFValue(19)}
             color={theme.colors.text}
           />
 
           <DateInfo>
-            <DateTitle>ATÉ  </DateTitle>
+            <DateTitle>ATÉ </DateTitle>
             <DateValue>{rentalPeriod.end}</DateValue>
           </DateInfo>
         </RentalPeriod>
@@ -164,18 +167,19 @@ export function SchudelingDetails() {
         <RentalPrice>
           <RentalPriceLabel>Total</RentalPriceLabel>
           <ReantalPriceDetails>
-            <RentalPriceQuota>{`R$ ${car.rent.price} x ${dates.length} diárias`}</RentalPriceQuota>
+            <RentalPriceQuota>{`R$ ${car.price} x ${dates.length} diárias`}</RentalPriceQuota>
             <RentalPriceTotal>R$ {rentTotal}</RentalPriceTotal>
           </ReantalPriceDetails>
         </RentalPrice>
-
       </Content>
 
       <Footer>
-        <Button title='Alugar agora' onPress={handleConfirmRental} color={theme.colors.success} />
+        <Button
+          title="Alugar agora"
+          onPress={handleConfirmRental}
+          color={theme.colors.success}
+        />
       </Footer>
-
     </Container>
-  )
+  );
 }
-
