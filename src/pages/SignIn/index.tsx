@@ -57,51 +57,51 @@ export function SignIn() {
             backgroundColor="transparent"
             translucent
           />
-            <Header>
-              <Title>Estamos{"\n"}quase lá</Title>
-              <Subtitle>
-                Faça seu login para começar{"\n"}
-                uma experiência incrível.
-              </Subtitle>
-            </Header>
+          <Header>
+            <Title>Estamos{"\n"}quase lá</Title>
+            <Subtitle>
+              Faça seu login para começar{"\n"}
+              uma experiência incrível.
+            </Subtitle>
+          </Header>
 
-            <Form>
-              <Input
-                iconName="mail"
-                placeholder="E-mail"
-                keyboardType="email-address"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={setEmail}
-                value={email}
-              />
+          <Form>
+            <Input
+              iconName="mail"
+              placeholder="E-mail"
+              keyboardType="email-address"
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={setEmail}
+              value={email}
+            />
 
-              <PasswordInput
-                iconName="lock"
-                placeholder="Senha"
-                onChangeText={setPassword}
-                value={password}
-                //  secureTextEntry
-              />
-            </Form>
+            <PasswordInput
+              iconName="lock"
+              placeholder="Senha"
+              onChangeText={setPassword}
+              value={password}
+              //  secureTextEntry
+            />
+          </Form>
 
-            <Footer>
-              <Button
-                title="Login"
-                onPress={handleSign}
-                enabled={false}
-                loading={true}
-              />
+          <Footer>
+            <Button
+              title="Login"
+              onPress={handleSign}
+              enabled={false}
+              loading={true}
+            />
 
-              <Button
-                title="Criar conta gratuita"
-                color={theme.colors.background_secondary}
-                onPress={handleNewAccount}
-                enabled={false}
-                loading={false}
-                light
-              />
-            </Footer>
+            <Button
+              title="Criar conta gratuita"
+              color={theme.colors.background_secondary}
+              onPress={handleNewAccount}
+              enabled={false}
+              loading={false}
+              light
+            />
+          </Footer>
         </Container>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

@@ -7,7 +7,7 @@ import {
   CardList,
   MyCarsButton,
 } from "./styles";
-import { Ionicons } from "@expo/vector-icons";
+// import { Ionicons } from "@expo/vector-icons";
 import {
   StatusBar,
   TouchableOpacity,
@@ -20,7 +20,7 @@ import { Cart } from "../../components/Car";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/CarDTO";
-import { Load } from "../../components/Loading";
+// import { Load } from "../../components/Loading";
 import { LoadingAnimated } from "../../components/LoadingAnimeted";
 import { useTheme } from "styled-components";
 import Animated, {
@@ -30,74 +30,80 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 
-import {
-  RectButton,
-  PanGestureHandler,
-  GestureHandlerRootView,
-} from "react-native-gesture-handler";
+// import {
+//   RectButton,
+//   PanGestureHandler,
+//   GestureHandlerRootView,
+// } from "react-native-gesture-handler";
 
-const ButtonAnimated = Animated.createAnimatedComponent(TouchableOpacity);
+// const ButtonAnimated = Animated.createAnimatedComponent(TouchableOpacity);
 
 export function Home() {
-  const theme = useTheme();
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-  const positionY = useSharedValue(0);
-  const positionX = useSharedValue(0);
+  // const positionY = useSharedValue(0);
+  // const positionX = useSharedValue(0);
 
-  const myCarsButtonStyles = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { translateX: positionX.value },
-        { translateY: positionY.value },
-      ],
-    };
-  });
+  // const myCarsButtonStyles = useAnimatedStyle(() => {
+  //   return {
+  //     transform: [
+  //       { translateX: positionX.value },
+  //       { translateY: positionY.value },
+  //     ],
+  //   };
+  // });
 
-  const onGestureEvent = useAnimatedGestureHandler({
-    onStart(_, ctx: any) {
-      ctx.positionX = positionX.value;
-      ctx.positionY = positionY.value;
-    },
-    onActive(event, ctx: any) {
-      (positionX.value = ctx.positionX + event.translationX),
-        (positionY.value = ctx.positionY + event.translationY);
-    },
-    onEnd() {
-      positionX.value = withSpring(0);
-      positionY.value = withSpring(0);
-    },
-  });
+  // const onGestureEvent = useAnimatedGestureHandler({
+  //   onStart(_, ctx: any) {
+  //     ctx.positionX = positionX.value;
+  //     ctx.positionY = positionY.value;
+  //   },
+  //   onActive(event, ctx: any) {
+  //     (positionX.value = ctx.positionX + event.translationX),
+  //       (positionY.value = ctx.positionY + event.translationY);
+  //   },
+  //   onEnd() {
+  //     positionX.value = withSpring(0);
+  //     positionY.value = withSpring(0);
+  //   },
+  // });
 
   function handleCarDetails(car: CarDTO) {
     navigation.navigate("CardDetails", { car });
   }
 
-  function handleOpenMyCars() {
-    navigation.navigate("MyCars");
-  }
+  // function handleOpenMyCars() {
+  //   navigation.navigate("MyCars");
+  // }
 
   useEffect(() => {
+    let isMounted = true;
     async function fetchCars() {
       try {
         const response = await api.get("/cars");
-        console.log("response", response.data);
-        setCars(response.data);
+        if(isMounted){
+          setCars(response.data);
+        }
       } catch (err) {
         console.log("Err", err);
       } finally {
-        setLoading(false);
+        if(isMounted){
+          setLoading(false);
+        }    
       }
     }
     fetchCars();
+    return () => {
+      isMounted = false
+    }
   }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener("hardwareBackPress", () => {
-      return true;
-    });
-  });
+  // useEffect(() => {
+  //   BackHandler.addEventListener("hardwareBackPress", () => {
+  //     return true;
+  //   });
+  // });
 
   return (
     <Container>
@@ -124,7 +130,7 @@ export function Home() {
           )}
         />
       )}
-
+{/* 
       <PanGestureHandler onGestureEvent={onGestureEvent}>
         <Animated.View
           style={[
@@ -147,7 +153,7 @@ export function Home() {
             />
           </ButtonAnimated>
         </Animated.View>
-      </PanGestureHandler>
+      </PanGestureHandler> */}
     </Container>
   );
 }

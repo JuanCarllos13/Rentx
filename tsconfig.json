@@ -3,7 +3,8 @@
     "strict": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true
   },
   "extends": "expo/tsconfig.base"
 }

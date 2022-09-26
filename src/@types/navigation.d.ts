@@ -10,6 +10,7 @@ export declare global {
       Splash: undefined;
       FirstStep: undefined;
       SignUpSecondStepSteep: {user: data};
+      SignIn: undefined
     }
   }
 }
