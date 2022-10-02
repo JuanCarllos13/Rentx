@@ -1,8 +1,8 @@
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
-import { FlatList, FlatListProps, TouchableOpacity } from 'react-native'
-import { CarDTO } from '../../dtos/CarDTO'
+import { FlatList, FlatListProps } from 'react-native'
 import {RectButton} from 'react-native-gesture-handler'
+import {Cart} from '../../dataBase/model/Cart'
 
 export const Container = styled.View`
     flex: 1;
@@ -32,7 +32,7 @@ export const TotalCard = styled.Text`
     font-family: ${({ theme }) => theme.fonts.primary_400};
     color:  ${({ theme }) => theme.colors.text};;
 `
-export const CardList = styled(FlatList as new (props: FlatListProps<CarDTO>) => FlatList<CarDTO>).attrs({
+export const CardList = styled(FlatList as new (props: FlatListProps<Cart>) => FlatList<Cart>).attrs({
     contentContainerStyle: {
         padding: 24
     },

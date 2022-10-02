@@ -13,8 +13,9 @@ import {
 } from "./styles";
 
 import { TouchableOpacityProps } from "react-native";
-import { CarDTO } from '../../dtos/CarDTO'
+import { Cart as ModelCar } from '../../dataBase/model/Cart'
 import { getAccessoryIcon } from "../../utils/getAccessoryIcon";
+import { CarDTO } from '../../dtos/CarDTO';
 
 interface Data extends TouchableOpacityProps {
   data: CarDTO

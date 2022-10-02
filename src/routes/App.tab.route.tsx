@@ -7,7 +7,6 @@ import PeopleSvg from "../assets/people.svg";
 import CarSvg from "../assets/car.svg";
 
 import { AppStackRoutes } from "./App.stack.route";
-import { Home } from "../pages/Home";
 import { MyCars } from "../pages/MyCars";
 import { Profile } from "../pages/Profile";
 import { Platform } from "react-native";

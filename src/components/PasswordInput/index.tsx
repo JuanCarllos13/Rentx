@@ -22,7 +22,6 @@ export function PasswordInput({ iconName, value, ...rest }: InputProps) {
 
   function handleIsFocus() {
     setIsFocused(true);
-   
   }
 
   function handleInputBlur() {
@@ -36,22 +35,28 @@ export function PasswordInput({ iconName, value, ...rest }: InputProps) {
 
   return (
     <Container>
-      <IconContainer  isFocused={isFocused}>
+      <IconContainer isFocused={isFocused}>
         <Feather
-         name={iconName} size={24} 
-         color={(isFocused || isFilled) ? theme.colors.main : theme.colors.text_details}
+          name={iconName}
+          size={24}
+          color={
+            isFocused || isFilled
+              ? theme.colors.main
+              : theme.colors.text_details
+          }
         />
       </IconContainer>
       <InputText
         onFocus={handleIsFocus}
         onBlur={handleInputBlur}
         isFocused={isFocused}
-        {...rest}
+        autoCorrect={false}
         secureTextEntry={isPasswordVisibly}
+        {...rest}
       />
 
       <ChangePasswordVisiblyButton onPress={handlePasswordVisibly}>
-        <IconContainer  isFocused={isFocused}>
+        <IconContainer isFocused={isFocused}>
           <Feather
             name={isPasswordVisibly ? "eye" : "eye-off"}
             size={24}

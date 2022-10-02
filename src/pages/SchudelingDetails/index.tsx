@@ -36,7 +36,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { CarDTO } from "../../dtos/CarDTO";
 import { format } from "date-fns";
 import { getPlatformDate } from "../../utils/getPlataformaDate";
-import {api} from "../../services/api";
+import { api } from "../../services/api";
 import { Alert } from "react-native";
 
 interface Params {

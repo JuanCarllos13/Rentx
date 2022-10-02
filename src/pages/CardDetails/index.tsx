@@ -4,6 +4,7 @@ import { BackButton } from "../../components/BackButton";
 import { ImagemSlider } from "../../components/ImageSlider";
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
 import { useTheme } from 'styled-components'
+import {Cart} from '../../dataBase/model/Cart'
 import Animated,
 {
   useSharedValue,
