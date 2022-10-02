@@ -13,16 +13,16 @@ import {
 } from "./styles";
 
 import { TouchableOpacityProps } from "react-native";
-import { Cart as ModelCar } from '../../dataBase/model/Cart'
+import { Cart as ModelCar } from "../../database/model/Cart";
 import { getAccessoryIcon } from "../../utils/getAccessoryIcon";
-import { CarDTO } from '../../dtos/CarDTO';
+import { CarDTO } from "../../dtos/CarDTO";
 
 interface Data extends TouchableOpacityProps {
-  data: CarDTO
+  data: ModelCar;
 }
 
 export function Cart({ data, ...rest }: Data) {
-  const MotorIcon = getAccessoryIcon(data.fuel_type)
+  const MotorIcon = getAccessoryIcon(data.fuel_type);
 
   return (
     <Container {...rest}>
@@ -42,11 +42,7 @@ export function Cart({ data, ...rest }: Data) {
         </About>
       </Details>
 
-
-
-      <CardImage source={{ uri: data.thumbnail }} resizeMode='contain' />
-
-
+      <CardImage source={{ uri: data.thumbnail }} resizeMode="contain" />
     </Container>
-  )
+  );
 }
