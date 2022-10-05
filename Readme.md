@@ -2,6 +2,19 @@
   <br>Rentx
 </h1>
 
+![1](https://user-images.githubusercontent.com/86435195/194077577-2d7f059f-dc6a-4552-913a-7db298ad9d09.jpg)
+
+
+![3](https://user-images.githubusercontent.com/86435195/194077624-c98391a2-a3e4-496a-90a3-e728be31ed16.jpg)
+
+<h1 align="center">
+
+![2](https://user-images.githubusercontent.com/86435195/194077599-cbc595ee-336c-45e7-a6cf-b319e10b2f7e.jpg)
+
+</h1>
+
+
+
 
 <h4 align="center">
   Projeto criado com o intuito de mostrar meus conhecimentos ao decorrer da minha carreira.
