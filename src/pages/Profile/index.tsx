@@ -33,15 +33,22 @@ import {
   OptionTitle,
   Section,
 } from "./styles";
+import { api } from "../../services/api";
+import { useNetInfo } from '@react-native-community/netinfo';
 
 export function Profile() {
-  const { user, signOut, updateUser } = useAuth();
+  const { user, signOut, updatedUser } = useAuth();
   const [option, setOption] = useState<"dataEdit" | "passwordEdit">("dataEdit");
   const [avatar, setAvatar] = useState(user.avatar);
+  const [password, setPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState(user.name);
-  const [driver_license, setDrive_license] = useState(user.driver_license);
+  const [driverLicense, setDriverLicense] = useState(user.driver_license);
   const theme = useTheme();
   const navigation = useNavigation();
+
+  const netInfo = useNetInfo();
 
   function handleBack() {
     navigation.goBack();
@@ -64,8 +71,12 @@ export function Profile() {
     );
   }
 
-  function handleOptionChange(optionSelected: "dataEdit" | "passwordEdit") {
-    setOption(optionSelected);
+  function handleOptionChange(optionSelected: 'dataEdit' | 'passwordEdit') {
+    if (netInfo.isConnected === false && optionSelected === 'passwordEdit') {
+      Alert.alert('Para mudar a senha, conecte-se a Internet');
+    } else {
+      setOption(optionSelected);
+    }
   }
 
   async function handleChangeAvatar() {
@@ -84,35 +95,50 @@ export function Profile() {
     }
   }
 
-  const handleProfileUpdate = async () => {
+  async function handleProfileUpdate() {
     try {
       const schema = Yup.object().shape({
-        driver_license: Yup.string().required("CNH é obrigatário"),
-        name: Yup.string().required("Nome é obrigatório"),
+        driverLicense: Yup.string()
+          .required('CNH é obrigatória'),
+        name: Yup.string()
+          .required('Nome é obrigatório')
       });
 
-      const data = { name, driver_license };
+      const data = { name, driverLicense };
       await schema.validate(data);
 
-      await updateUser({
+
+      if (password !== confirmPassword) {
+        return Alert.alert('A nova senha e a senha de confirmação não são iguais!');
+      }
+
+      if (password && oldPassword) {
+        api.put('users', {
+          password,
+          old_password: oldPassword
+        }).catch(error => console.log(error))
+      }
+
+      await updatedUser({
         id: user.id,
         user_id: user.user_id,
-        email: user.name,
+        email: user.email,
         name,
-        driver_license,
+        driver_license: driverLicense,
         avatar,
         token: user.token,
       });
 
-      Alert.alert("Perfil atualizado.");
+      Alert.alert('Perfil atualizado!');
+
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
-        Alert.alert("Opa: ", error.message);
+        Alert.alert('Opa', error.message);
       } else {
-        Alert.alert("Não possível atualizar o perfil");
+        Alert.alert('Não foi possível atualizar o perfil');
       }
     }
-  };
+  }
 
   return (
     <KeyboardAvoidingView behavior="position" enabled>
@@ -175,16 +201,26 @@ export function Profile() {
                   placeholder="CNH"
                   keyboardType="number-pad"
                   defaultValue={user.driver_license}
-                  onChangeText={setDrive_license}
+                  onChangeText={setDriverLicense}
                 />
               </Section>
             ) : (
               <Section>
-                <PasswordInput iconName="lock" placeholder="Senha atual" />
-
-                <PasswordInput iconName="lock" placeholder="Nova Senha" />
-
-                <PasswordInput iconName="lock" placeholder="Repetir Senha" />
+                <PasswordInput
+                  iconName="lock"
+                  placeholder="Senha atual"
+                  onChangeText={setOldPassword}
+                />
+                <PasswordInput
+                  iconName="lock"
+                  placeholder="Nova senha"
+                  onChangeText={setPassword}
+                />
+                <PasswordInput
+                  iconName="lock"
+                  placeholder="Repetir senha"
+                  onChangeText={setConfirmPassword}
+                />
               </Section>
             )}
             <Button title="Salvar alterações" onPress={handleProfileUpdate} />

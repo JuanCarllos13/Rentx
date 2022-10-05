@@ -2,25 +2,25 @@ import { Model } from "@nozbe/watermelondb";
 import { field } from "@nozbe/watermelondb/decorators";
 
 class User extends Model {
-  static table = "users";
+  static table = 'users'
 
-  @field("user_id")
+  @field('user_id')
   user_id!: string;
 
-  @field("name")
+  @field('name')
   name!: string;
 
-  @field("email")
+  @field('email')
   email!: string;
 
-  @field("driver_license")
+  @field('driver_license')
   driver_license!: string;
 
-  @field("avatar")
+  @field('avatar')
   avatar!: string;
 
-  @field("token")
+  @field('token')
   token!: string;
 }
 
-export { User };
+export { User }

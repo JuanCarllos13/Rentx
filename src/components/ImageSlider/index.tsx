@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
 import { FlatList, ViewToken } from "react-native";
 import { Bullet } from "../Bullet";
@@ -7,13 +8,13 @@ import {
   ImageIndexs,
   CardImagemWrapper,
   CardImagem,
-} from './styles'
+} from "./styles";
 
 interface Props {
-  imagesUrl:{
-    photo: string
-    id: string
-  }[]
+  imagesUrl: {
+    photo: string;
+    id: string;
+  }[];
 }
 
 interface ChangeImageProps {
@@ -22,34 +23,30 @@ interface ChangeImageProps {
 }
 
 export function ImagemSlider({ imagesUrl }: Props) {
-  const [imagemIndex, setImagemIndex] = useState(0)
+  const [imagemIndex, setImagemIndex] = useState(0);
+  const navigation = useNavigation();
 
   const indexChanged = useRef((info: ChangeImageProps) => {
     const index = info.viewableItems[0].index!;
-    setImagemIndex(index)
-  })
+    setImagemIndex(index);
+  });
+
+
 
   return (
     <Container>
       <ImageIndexs>
-        {
-          imagesUrl.map((item, index) => (
-            <Bullet
-              key={String(item.id)}
-              active={index === imagemIndex} />
-          ))
-        }
+        {imagesUrl.map((item, index) => (
+          <Bullet key={String(item.id)} active={index === imagemIndex} />
+        ))}
       </ImageIndexs>
 
       <FlatList
         data={imagesUrl}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <CardImagemWrapper>
-            <CardImagem
-              source={{ uri: item.photo }}
-              resizeMode='contain'
-            />
+            <CardImagem source={{ uri: item.photo }} resizeMode="contain" />
           </CardImagemWrapper>
         )}
         horizontal
@@ -57,5 +54,5 @@ export function ImagemSlider({ imagesUrl }: Props) {
         onViewableItemsChanged={indexChanged.current}
       />
     </Container>
-  )
+  );
 }

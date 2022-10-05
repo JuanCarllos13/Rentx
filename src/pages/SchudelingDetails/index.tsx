@@ -38,6 +38,7 @@ import { format } from "date-fns";
 import { getPlatformDate } from "../../utils/getPlataformaDate";
 import { api } from "../../services/api";
 import { Alert } from "react-native";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 interface Params {
   car: CarDTO;
@@ -53,6 +54,7 @@ export function SchudelingDetails() {
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>(
     {} as RentalPeriod
   );
+  const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const navigation = useNavigation();
   const route = useRoute();
@@ -60,26 +62,15 @@ export function SchudelingDetails() {
   const rentTotal = Number(dates.length * car.price);
 
   async function handleConfirmRental() {
-    const schedules = await api.get(`/schedules_bycars/${car.id}`);
-
-    const unavailable_dates = [...schedules.data.unavailable_dates, ...dates];
-
-    await api.post("schedules_byuser", {
-      user_id: 1,
-      car,
-      startDate: format(getPlatformDate(new Date(dates[0])), "dd/MM/yyyy"),
-      endDate: format(
-        getPlatformDate(new Date(dates[dates.length - 1])),
-        "dd/MM/yyyy"
-      ),
-    });
-
-    api
-      .put(`/schedules_bycars/${car.id}`, {
-        id: car.id,
-        unavailable_dates,
+    await api
+      .post("/rentals", {
+        user_id: 1,
+        car_id: car.id,
+        start_date: new Date(),
+        end_date: new Date(),
+        total: rentTotal,
       })
-      .then((response) => {
+      .then(() => {
         navigation.navigate("Confirmation", {
           title: "Carro Alugado",
           message: `Agora você só precisa ir${"\n"}até a concessionária da RENTX${"\n"}pegar o seu automóvel.`,
@@ -87,6 +78,7 @@ export function SchudelingDetails() {
         });
       })
       .catch((err) => {
+        setLoading(false);
         Alert.alert("Não foi possível fazer o agendamento");
       });
   }
@@ -112,7 +104,13 @@ export function SchudelingDetails() {
       </Header>
 
       <CarImagem>
-        <ImagemSlider imagesUrl={car.photos} />
+        <ImagemSlider
+          imagesUrl={
+            !!car.photos
+              ? car.photos
+              : [{ id: car.thumbnail, photo: car.thumbnail }]
+          }
+        />
       </CarImagem>
 
       <Content>
@@ -127,16 +125,17 @@ export function SchudelingDetails() {
             <Price>R$ {car.price}</Price>
           </Rent>
         </Details>
-
-        <Accessories>
-          {car.accessories.map((accessory) => (
-            <Accessory
-              key={accessory.type}
-              name={accessory.name}
-              icon={getAccessoryIcon(accessory.type)}
-            />
-          ))}
-        </Accessories>
+        {car.accessories && (
+          <Accessories>
+            {car.accessories.map((accessory) => (
+              <Accessory
+                key={accessory.name}
+                name={accessory.name}
+                icon={getAccessoryIcon(accessory.type)}
+              />
+            ))}
+          </Accessories>
+        )}
 
         <RentalPeriod>
           <CalendarIcon>
@@ -182,4 +181,7 @@ export function SchudelingDetails() {
       </Footer>
     </Container>
   );
+}
+function setCar(data: any) {
+  throw new Error("Function not implemented.");
 }
